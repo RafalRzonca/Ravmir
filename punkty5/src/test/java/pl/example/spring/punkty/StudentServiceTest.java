@@ -7,6 +7,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import pl.example.spring.punkty.db.ScoreRepository;
 import pl.example.spring.punkty.db.StudentRepository;
 
 import static org.junit.Assert.*;
@@ -16,19 +17,22 @@ import static org.junit.Assert.*;
 public class StudentServiceTest {
 
     @Autowired
-    private StudentRepository repository;
+    private StudentRepository studentRepository;
+
+    @Autowired
+    private ScoreRepository scoreRepository;
 
     @Test
     public void getEmptyList() {
 
-        final StudentService service = new StudentService(repository);
+        final StudentService service = new StudentService(studentRepository, scoreRepository);
         List<Student> students = service.getStudents();
         assertTrue(students.isEmpty());
     }
 
     @Test
     public void addStudent() {
-        final StudentService service = new StudentService(repository);
+        final StudentService service = new StudentService(studentRepository, scoreRepository);
         final Student created = service.addStudent(new NewStudent("Student1","1-2-3","IP"));
         assertNotNull(created);
 
@@ -37,7 +41,7 @@ public class StudentServiceTest {
     @Test
     public void addStudentIsReturned() {
 
-        final StudentService service = new StudentService(repository);
+        final StudentService service = new StudentService(studentRepository, scoreRepository);
         final Student created = service.addStudent(new NewStudent("StudentTestowy","1-2-3","IP31"));
         final List<Student> all = service.getStudents();
 
@@ -46,7 +50,7 @@ public class StudentServiceTest {
 
     @Test
     public void addStudentHasNewId() {
-        final StudentService service = new StudentService(repository);
+        final StudentService service = new StudentService(studentRepository, scoreRepository);
         final Student created = service.addStudent(new NewStudent("StudentTestowy","1-2-3","IP31"));
         final Student created2 = service.addStudent(new NewStudent("StudentTestowy2","3-5-8","IP32"));
 
@@ -55,7 +59,7 @@ public class StudentServiceTest {
     }
     @After
     public void cleanAfterTest() {
-        this.repository.deleteAll();
+        this.studentRepository.deleteAll();
     }
 
 

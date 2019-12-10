@@ -1,10 +1,15 @@
 package pl.example.spring.punkty.db;
 
 
+//import pl.example.spring.punkty.Student;
+//
+//import javax.persistence.*;
+
+
 import pl.example.spring.punkty.Student;
 
 import javax.persistence.*;
-
+import java.util.Set;
 
 @Entity
 //@Table(name="student_row")
@@ -63,5 +68,14 @@ public class StudentRow {
                 this.getGroup());
     }
 
+    public Set<ScoreRow> getScores() {
+        return scores;
+    }
 
+    public void setScores(Set<ScoreRow> scores) {
+        this.scores = scores;
+    }
+
+    @OneToMany(mappedBy = "student")
+    private Set<ScoreRow> scores;
 }
